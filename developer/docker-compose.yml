@@ -1,0 +1,90 @@
+apim_rdbms:
+  image: sysco/apim-mysql:2.1.0
+  environment:
+        MYSQL_ROOT_PASSWORD: root
+  ports:
+    - "3306:3306"
+analytics:
+  image: sysco/apim-analytics:2.1.0
+  ports:
+    - "9448:9444"
+    - "7712:7712"
+  environment:
+    - SLEEP=50
+  links:
+    - apim_rdbms
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=analytics
+traffic-manager:
+  image: sysco/apim-traffic-manager:2.1.0
+  ports:
+    - "9447:9443"
+  links:
+    - analytics
+    - apim_rdbms
+  environment:
+        - SLEEP=10
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=trafficmanager
+keymanager:
+  image: sysco/apim-keymanager:2.1.0
+  ports:
+    - "9443:9443"
+  links:
+    - analytics
+    - apim_rdbms
+  environment:
+    - SLEEP=80
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=keymanager
+gateway-manager:
+  image: sysco/apim-gateway-manager:2.1.0
+  ports:
+    - "9444:9443"
+  links:
+    - analytics
+    - apim_rdbms
+  environment:
+    - SLEEP=100
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=manager
+gateway-worker:
+  image: sysco/apim-gateway-worker:2.1.0
+  ports:
+    - "8280:8280"
+    - "8243:8243"
+  links:
+    - gateway-manager
+    - traffic-manager
+    - analytics
+    - keymanager
+    - apim_rdbms
+  environment:
+    - SLEEP=180
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=gateway
+store:
+  image: sysco/apim-store:2.1.0
+  ports:
+    - "9446:9443"
+  links:
+    - analytics
+    - keymanager
+    - apim_rdbms
+  environment:
+    - SLEEP=200
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=store
+publisher:
+  image: sysco/apim-publisher:2.1.0
+  ports:
+    - "9445:9443"
+  links:
+    - keymanager
+    - gateway-manager
+    - analytics
+    - apim_rdbms
+  environment:
+    - SLEEP=150
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=publisher
