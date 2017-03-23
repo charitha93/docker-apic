@@ -5,6 +5,8 @@ analytics:
     - "7712:7712"
   extra_hosts:
     - "apim_rdbms:34.207.244.51"
+  environment:
+    - SLEEP=50
   labels:
       io.rancher.scheduler.affinity:host_label: service=analytics
 traffic-manager:
@@ -26,6 +28,8 @@ keymanager:
     - "keymanager:127.0.0.1"
   links:
     - analytics
+  environment:
+    - SLEEP=60
   labels:
       io.rancher.scheduler.affinity:host_label: service=keymanager
 gateway-manager:
@@ -37,6 +41,8 @@ gateway-manager:
     - "gateway-manager:127.0.0.1"
   links:
     - analytics
+  environment:
+    - SLEEP=100
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
 gateway-worker:
@@ -52,6 +58,8 @@ gateway-worker:
   extra_hosts:
     - "apim_rdbms:34.207.244.51"
     - "gateway-worker:127:0.0.1"
+  environment:
+    - SLEEP=180
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
 store:
@@ -64,6 +72,8 @@ store:
   links:
     - analytics
     - keymanager
+  environment:
+    - SLEEP=200
   labels:
       io.rancher.scheduler.affinity:host_label: service=store
 publisher:
@@ -77,5 +87,7 @@ publisher:
     - keymanager
     - gateway-manager
     - analytics
+  environment:
+    - SLEEP=150
   labels:
       io.rancher.scheduler.affinity:host_label: service=publisher
