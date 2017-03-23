@@ -53,7 +53,8 @@ gateway-manager:
   environment:
     - SLEEP=100
   extra_hosts:
-    - "gateway-manager:127.0.0.1"
+    - "gateway-manager:172.17.0.6"
+    - "am.wso2.com:172.17.0.6"
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
 gateway-worker:
@@ -70,7 +71,8 @@ gateway-worker:
   environment:
     - SLEEP=180
   extra_hosts:
-    - "gateway-worker:127.0.0.1"
+    - "gateway-worker:172.17.0.9"
+    - "mgt.am.wso2.com:172.17.0.9"
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
 store:
