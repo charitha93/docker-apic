@@ -11,6 +11,8 @@ analytics:
     - "7712:7712"
   environment:
     - SLEEP=50
+  extra_hosts:
+    - "analytics:127.0.0.1"
   links:
     - apim_rdbms
   labels:
@@ -22,6 +24,8 @@ traffic-manager:
   links:
     - analytics
     - apim_rdbms
+  extra_hosts:
+    - "traffic-manager:127.0.0.1"
   environment:
         - SLEEP=10
   labels:
@@ -35,6 +39,8 @@ keymanager:
     - apim_rdbms
   environment:
     - SLEEP=80
+  extra_hosts:
+    - "keymanager:127.0.0.1"
   labels:
       io.rancher.scheduler.affinity:host_label: service=keymanager
 gateway-manager:
@@ -46,6 +52,8 @@ gateway-manager:
     - apim_rdbms
   environment:
     - SLEEP=100
+  extra_hosts:
+    - "gateway-manager:127.0.0.1"
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
 gateway-worker:
@@ -61,6 +69,8 @@ gateway-worker:
     - apim_rdbms
   environment:
     - SLEEP=180
+  extra_hosts:
+    - "gateway-worker:127.0.0.1"
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
 store:
@@ -73,12 +83,16 @@ store:
     - apim_rdbms
   environment:
     - SLEEP=200
+  extra_hosts:
+    - "store:127.0.0.1"
   labels:
       io.rancher.scheduler.affinity:host_label: service=store
 publisher:
   image: sysco/apim-publisher:2.1.0
   ports:
     - "9445:9443"
+  extra_hosts:
+    - "publisher:127.0.0.1"
   links:
     - keymanager
     - gateway-manager
