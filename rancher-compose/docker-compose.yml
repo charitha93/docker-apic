@@ -1,0 +1,81 @@
+analytics:
+  image: sysco/apim-analytics:2.1.0
+  ports:
+    - "9448:9444"
+    - "7712:7712"
+  extra_hosts:
+    - "apim_rdbms:34.207.244.51"
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=analytics
+traffic-manager:
+  image: sysco/apim-traffic-manager:2.1.0
+  ports:
+    - "9447:9443"
+  extra_hosts:
+    - "apim_rdbms:34.207.244.51"
+  links:
+    - analytics
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=trafficmanager
+keymanager:
+  image: sysco/apim-keymanager:2.1.0
+  ports:
+    - "9443:9443"
+  extra_hosts:
+    - "apim_rdbms:34.207.244.51"
+    - "keymanager:127.0.0.1"
+  links:
+    - analytics
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=keymanager
+gateway-manager:
+  image: sysco/apim-gateway-manager:2.1.0
+  ports:
+    - "9444:9443"
+  extra_hosts:
+    - "apim_rdbms:34.207.244.51"
+    - "gateway-manager:127.0.0.1"
+  links:
+    - analytics
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=manager
+gateway-worker:
+  image: sysco/apim-gateway-worker:2.1.0
+  ports:
+    - "8280:8280"
+    - "8243:8243"
+  links:
+    - gateway-manager
+    - traffic-manager
+    - analytics
+    - keymanager
+  extra_hosts:
+    - "apim_rdbms:34.207.244.51"
+    - "gateway-worker:127:0.0.1"
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=gateway
+store:
+  image: sysco/apim-store:2.1.0
+  ports:
+    - "9446:9443"
+  extra_hosts:
+    - "apim_rdbms:34.207.244.51"
+    - "store:127.0.0.1"
+  links:
+    - analytics
+    - keymanager
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=store
+publisher:
+  image: sysco/apim-publisher:2.1.0
+  ports:
+    - "9445:9443"
+  extra_hosts:
+    - "apim_rdbms:34.207.244.51"
+    - "publisher:127.0.0.1"
+  links:
+    - keymanager
+    - gateway-manager
+    - analytics
+  labels:
+      io.rancher.scheduler.affinity:host_label: service=publisher
