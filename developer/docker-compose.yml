@@ -40,7 +40,7 @@ keymanager:
   environment:
     - SLEEP=80
   extra_hosts:
-    - "keymanager:127.0.0.1"
+    - "keymanager:172.17.0.5"
   labels:
       io.rancher.scheduler.affinity:host_label: service=keymanager
 gateway-manager:
@@ -55,6 +55,7 @@ gateway-manager:
   extra_hosts:
     - "gateway-manager:172.17.0.6"
     - "am.wso2.com:172.17.0.6"
+    - "gateway-worker:172.17.0.9" 
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
 gateway-worker:
@@ -72,6 +73,7 @@ gateway-worker:
     - SLEEP=180
   extra_hosts:
     - "gateway-worker:172.17.0.9"
+    - "gateway-manager:172.17.0.6"
     - "mgt.am.wso2.com:172.17.0.9"
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
@@ -83,10 +85,14 @@ store:
     - analytics
     - keymanager
     - apim_rdbms
+    - gateway-worker
+    - gateway-manager
   environment:
     - SLEEP=200
   extra_hosts:
-    - "store:127.0.0.1"
+    - "publisher:172.17.0.7"
+    - "store:172.17.0.8"
+    - "keymanager:172.17.0.5"
   labels:
       io.rancher.scheduler.affinity:host_label: service=store
 publisher:
@@ -94,7 +100,8 @@ publisher:
   ports:
     - "9445:9443"
   extra_hosts:
-    - "publisher:127.0.0.1"
+    - "publisher:172.17.0.7"
+    - "store:172.17.0.8"
   links:
     - keymanager
     - gateway-manager
