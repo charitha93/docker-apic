@@ -1,6 +1,6 @@
 version: '2'
 services:
-  apim_rdbms:
+  apic-rdbms:
     image: sysco/apim-mysql:2.1.0
     environment:
         MYSQL_ROOT_PASSWORD: root
