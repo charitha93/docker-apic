@@ -1,5 +1,5 @@
 analytics:
-  image: sysco/apim-analytics:{VERSION}
+  image: sysco/apic-analytics:{VERSION}
   ports:
     - "9448:9444"
     - "7712:7712"
@@ -8,7 +8,7 @@ analytics:
   labels:
       io.rancher.scheduler.affinity:host_label: service=analytics
 traffic-manager:
-  image: sysco/apim-traffic-manager:{VERSION}
+  image: sysco/apic-traffic-manager:{VERSION}
   ports:
     - "9447:9443"
   extra_hosts:
@@ -18,7 +18,7 @@ traffic-manager:
   labels:
       io.rancher.scheduler.affinity:host_label: service=trafficmanager
 keymanager:
-  image: sysco/apim-keymanager:{VERSION}
+  image: sysco/apic-keymanager:{VERSION}
   ports:
     - "9443:9443"
   extra_hosts:
@@ -29,7 +29,7 @@ keymanager:
   labels:
       io.rancher.scheduler.affinity:host_label: service=keymanager
 gateway-manager:
-  image: sysco/apim-gateway-manager:{VERSION}
+  image: sysco/apic-gateway-manager:{VERSION}
   ports:
     - "9444:9443"
   extra_hosts:
@@ -40,7 +40,7 @@ gateway-manager:
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
 gateway-worker:
-  image: sysco/apim-gateway-worker:{VERSION}
+  image: sysco/apic-gateway-worker:{VERSION}
   ports:
     - "8280:8280"
     - "8243:8243"
@@ -55,7 +55,7 @@ gateway-worker:
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
 store:
-  image: sysco/apim-store:{VERSION}
+  image: sysco/apic-store:{VERSION}
   ports:
     - "9446:9443"
   extra_hosts:
@@ -67,7 +67,7 @@ store:
   labels:
       io.rancher.scheduler.affinity:host_label: service=store
 publisher:
-  image: sysco/apim-publisher:{VERSION}
+  image: sysco/apic-publisher:{VERSION}
   ports:
     - "9445:9443"
   extra_hosts:
