@@ -1,37 +1,37 @@
 version: '2'
 services:
   apic-rdbms:
-    image: sysco/apim-mysql:2.1.0
+    image: sysco/apic-mysql:latest
     environment:
         MYSQL_ROOT_PASSWORD: root
     ports:
     - "3306:3306"
   analytics:
-    image: sysco/apim-analytics:2.1.0
+    image: sysco/apic-analytics:latest
     environment:
       - SLEEP=100
     ports:
     - "9448:9444"
   traffic-manager:
-    image: sysco/apim-traffic-manager:2.1.0
+    image: sysco/apic-traffic-manager:latest
     environment:
       - SLEEP=0
     ports:
     - "9447:9443"
   keymanager:
-    image: sysco/apim-keymanager:2.1.0
+    image: sysco/apic-keymanager:latest
     environment:
       - SLEEP=110
     ports:
     - "9443:9443"
   gateway-manager:
-    image: sysco/apim-gateway-manager:2.1.0
+    image: sysco/apic-gateway-manager:latest
     environment:
       - SLEEP=150
     ports:
     - "9444:9443"
   gateway-worker:
-    image: sysco/apim-gateway-worker:2.1.0
+    image: sysco/apic-gateway-worker:latest
     environment:
       - SLEEP=230
     ports:
@@ -40,13 +40,13 @@ services:
     links:
       - gateway-manager
   store:
-    image: sysco/apim-store:2.1.0
+    image: sysco/apic-store:latest
     environment:
       - SLEEP=250
     ports:
     - "9446:9443"
   publisher:
-    image: sysco/apim-publisher:2.1.0
+    image: sysco/apic-publisher:latest
     environment:
       - SLEEP=200
     ports:

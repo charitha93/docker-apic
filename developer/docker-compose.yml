@@ -1,11 +1,11 @@
 apim_rdbms:
-  image: sysco/apim-mysql:2.1.0
+  image: sysco/apic-mysql:latest
   environment:
         MYSQL_ROOT_PASSWORD: root
   ports:
     - "3306:3306"
 analytics:
-  image: sysco/apim-analytics:2.1.0
+  image: sysco/apic-analytics:latest
   ports:
     - "9448:9444"
     - "7712:7712"
@@ -16,7 +16,7 @@ analytics:
   labels:
       io.rancher.scheduler.affinity:host_label: service=analytics
 traffic-manager:
-  image: sysco/apim-traffic-manager:2.1.0
+  image: sysco/apic-traffic-manager:latest
   ports:
     - "9447:9443"
   links:
@@ -27,7 +27,7 @@ traffic-manager:
   labels:
       io.rancher.scheduler.affinity:host_label: service=trafficmanager
 keymanager:
-  image: sysco/apim-keymanager:2.1.0
+  image: sysco/apic-keymanager:latest
   ports:
     - "9443:9443"
   links:
@@ -40,7 +40,7 @@ keymanager:
   labels:
       io.rancher.scheduler.affinity:host_label: service=keymanager
 gateway-manager:
-  image: sysco/apim-gateway-manager:2.1.0
+  image: sysco/apic-gateway-manager:latest
   ports:
     - "9444:9443"
   links:
@@ -54,7 +54,7 @@ gateway-manager:
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
 gateway-worker:
-  image: sysco/apim-gateway-worker:2.1.0
+  image: sysco/apic-gateway-worker:latest
   ports:
     - "8280:8280"
     - "8243:8243"
@@ -71,7 +71,7 @@ gateway-worker:
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
 store:
-  image: sysco/apim-store:2.1.0
+  image: sysco/apic-store:latest
   ports:
     - "9446:9443"
   links:
@@ -89,7 +89,7 @@ store:
   labels:
       io.rancher.scheduler.affinity:host_label: service=store
 publisher:
-  image: sysco/apim-publisher:2.1.0
+  image: sysco/apic-publisher:latest
   ports:
     - "9445:9443"
   links:
