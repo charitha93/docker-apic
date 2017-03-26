@@ -1,7 +1,7 @@
 version: '2'
 services:
   apic-rdbms:
-    image: sysco/apic-mysql:latest
+    image: sysco/apim-mysql:2.1.0
     environment:
         MYSQL_ROOT_PASSWORD: root
     ports:
