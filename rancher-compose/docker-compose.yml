@@ -1,30 +1,28 @@
 analytics:
-  image: sysco/apim-analytics:2.1.0
+  image: sysco/apic-analytics:{VERSION}
   ports:
     - "9448:9444"
     - "7712:7712"
   extra_hosts:
-    - "apim_rdbms:34.207.244.51"
-  environment:
-    - SLEEP=50
+    - "apim_rdbms:{RDBMS_IP}"
   labels:
       io.rancher.scheduler.affinity:host_label: service=analytics
 traffic-manager:
-  image: sysco/apim-traffic-manager:2.1.0
+  image: sysco/apic-traffic-manager:{VERSION}
   ports:
     - "9447:9443"
   extra_hosts:
-    - "apim_rdbms:34.207.244.51"
+    - "apim_rdbms:{RDBMS_IP}"
   links:
     - analytics
   labels:
       io.rancher.scheduler.affinity:host_label: service=trafficmanager
 keymanager:
-  image: sysco/apim-keymanager:2.1.0
+  image: sysco/apic-keymanager:{VERSION}
   ports:
     - "9443:9443"
   extra_hosts:
-    - "apim_rdbms:34.207.244.51"
+    - "apim_rdbms:{RDBMS_IP}"
     - "keymanager:127.0.0.1"
   links:
     - analytics
@@ -33,11 +31,11 @@ keymanager:
   labels:
       io.rancher.scheduler.affinity:host_label: service=keymanager
 gateway-manager:
-  image: sysco/apim-gateway-manager:2.1.0
+  image: sysco/apic-gateway-manager:{VERSION}
   ports:
     - "9444:9443"
   extra_hosts:
-    - "apim_rdbms:34.207.244.51"
+    - "apim_rdbms:{RDBMS_IP}"
     - "gateway-manager:127.0.0.1"
   links:
     - analytics
@@ -46,7 +44,7 @@ gateway-manager:
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
 gateway-worker:
-  image: sysco/apim-gateway-worker:2.1.0
+  image: sysco/apic-gateway-worker:{VERSION}
   ports:
     - "8280:8280"
     - "8243:8243"
@@ -56,18 +54,18 @@ gateway-worker:
     - analytics
     - keymanager
   extra_hosts:
-    - "apim_rdbms:34.207.244.51"
+    - "apim_rdbms:{RDBMS_IP}"
     - "gateway-worker:127:0.0.1"
   environment:
     - SLEEP=180
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
 store:
-  image: sysco/apim-store:2.1.0
+  image: sysco/apic-store:{VERSION}
   ports:
     - "9446:9443"
   extra_hosts:
-    - "apim_rdbms:34.207.244.51"
+    - "apim_rdbms:{RDBMS_IP}"
     - "store:127.0.0.1"
   links:
     - analytics
@@ -77,11 +75,11 @@ store:
   labels:
       io.rancher.scheduler.affinity:host_label: service=store
 publisher:
-  image: sysco/apim-publisher:2.1.0
+  image: sysco/apic-publisher:{VERSION}
   ports:
     - "9445:9443"
   extra_hosts:
-    - "apim_rdbms:34.207.244.51"
+    - "apim_rdbms:{RDBMS_IP}"
     - "publisher:127.0.0.1"
   links:
     - keymanager
