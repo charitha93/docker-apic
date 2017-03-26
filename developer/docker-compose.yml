@@ -1,50 +1,60 @@
+apim_rdbms:
+  image: sysco/apim-mysql:2.1.0
+  environment:
+        MYSQL_ROOT_PASSWORD: root
+  ports:
+    - "3306:3306"
 analytics:
-  image: sysco/apic-analytics:{VERSION}
+  image: sysco/apic-analytics:latest
   ports:
     - "9448:9444"
     - "7712:7712"
-  extra_hosts:
-    - "apim_rdbms:{RDBMS_IP}"
+  environment:
+    - SLEEP=50
+  links:
+    - apim_rdbms
   labels:
       io.rancher.scheduler.affinity:host_label: service=analytics
 traffic-manager:
-  image: sysco/apic-traffic-manager:{VERSION}
+  image: sysco/apic-traffic-manager:latest
   ports:
     - "9447:9443"
-  extra_hosts:
-    - "apim_rdbms:{RDBMS_IP}"
   links:
     - analytics
+    - apim_rdbms
+  environment:
+    - SLEEP=10
   labels:
       io.rancher.scheduler.affinity:host_label: service=trafficmanager
 keymanager:
-  image: sysco/apic-keymanager:{VERSION}
+  image: sysco/apic-keymanager:latest
   ports:
     - "9443:9443"
-  extra_hosts:
-    - "apim_rdbms:{RDBMS_IP}"
-    - "keymanager:127.0.0.1"
   links:
     - analytics
+    - apim_rdbms
   environment:
-    - SLEEP=60
+    - SLEEP=80
+  extra_hosts:
+    - "keymanager:172.17.0.5"
   labels:
       io.rancher.scheduler.affinity:host_label: service=keymanager
 gateway-manager:
-  image: sysco/apic-gateway-manager:{VERSION}
+  image: sysco/apic-gateway-manager:latest
   ports:
     - "9444:9443"
-  extra_hosts:
-    - "apim_rdbms:{RDBMS_IP}"
-    - "gateway-manager:127.0.0.1"
   links:
     - analytics
+    - apim_rdbms
   environment:
     - SLEEP=100
+  extra_hosts:
+    - "gateway-manager:172.17.0.6"
+    - "gateway-worker:172.17.0.9" 
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
 gateway-worker:
-  image: sysco/apic-gateway-worker:{VERSION}
+  image: sysco/apic-gateway-worker:latest
   ports:
     - "8280:8280"
     - "8243:8243"
@@ -53,38 +63,43 @@ gateway-worker:
     - traffic-manager
     - analytics
     - keymanager
-  extra_hosts:
-    - "apim_rdbms:{RDBMS_IP}"
-    - "gateway-worker:127:0.0.1"
+    - apim_rdbms
   environment:
     - SLEEP=180
+  extra_hosts:
+    - "gateway-worker:172.17.0.9"
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
 store:
-  image: sysco/apic-store:{VERSION}
+  image: sysco/apic-store:latest
   ports:
     - "9446:9443"
-  extra_hosts:
-    - "apim_rdbms:{RDBMS_IP}"
-    - "store:127.0.0.1"
   links:
     - analytics
     - keymanager
+    - apim_rdbms
+    - gateway-worker
+    - gateway-manager
+    - publisher
+  extra_hosts:
+    - "publisher:172.17.0.7"
+    - "store:172.17.0.8"
   environment:
     - SLEEP=200
   labels:
       io.rancher.scheduler.affinity:host_label: service=store
 publisher:
-  image: sysco/apic-publisher:{VERSION}
+  image: sysco/apic-publisher:latest
   ports:
     - "9445:9443"
-  extra_hosts:
-    - "apim_rdbms:{RDBMS_IP}"
-    - "publisher:127.0.0.1"
   links:
     - keymanager
     - gateway-manager
     - analytics
+    - apim_rdbms
+  extra_hosts:
+    - "publisher:172.17.0.7"
+    - "store:172.17.0.8"
   environment:
     - SLEEP=150
   labels:
