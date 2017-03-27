@@ -16,6 +16,7 @@ RUN rm -r /mnt/wso2am-2.1.0/repository/deployment/server/webapps/shindig.war
 RUN rm -r /mnt/wso2am-2.1.0/repository/deployment/server/webapps/throttle#data#v1.war
 
 RUN rm -r /mnt/wso2am-2.1.0/repository/deployment/server/jaggeryapps/*
+RUN rm -r /mnt/wso2
 
 USER root
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/rsyncuser --gecos "User" rsyncuser
