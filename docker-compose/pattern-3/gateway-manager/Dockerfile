@@ -16,7 +16,6 @@ RUN rm -r /mnt/wso2am-2.1.0/repository/deployment/server/webapps/shindig.war
 RUN rm -r /mnt/wso2am-2.1.0/repository/deployment/server/webapps/throttle#data#v1.war
 
 RUN rm -r /mnt/wso2am-2.1.0/repository/deployment/server/jaggeryapps/*
-RUN rm -r /mnt/wso2
 
 USER root
 RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/rsyncuser --gecos "User" rsyncuser
@@ -25,6 +24,7 @@ RUN adduser rsyncuser sudo
 RUN echo "rsyncuser:rsyncuser" | chpasswd
 RUN chmod 755 /mnt/wso2-artifacts/bin
 RUN chmod -R 755 /mnt/wso2-artifacts/repository
+RUN rm -r /mnt/wso2
 
 RUN apt-get update && apt-get install -y apt-utils rsync ssh openssh-server supervisor
 RUN mkdir -p  /var/run/sshd /var/log/supervisor
