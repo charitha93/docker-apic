@@ -7,6 +7,7 @@ analytics:
     - "apic-rdbms:{RDBMS_IP}"
   labels:
       io.rancher.scheduler.affinity:host_label: service=analytics
+      io.rancher.container.pull_image: always
 traffic-manager:
   image: sysco/apic-traffic-manager:{VERSION}
   ports:
@@ -17,6 +18,7 @@ traffic-manager:
     - analytics
   labels:
       io.rancher.scheduler.affinity:host_label: service=trafficmanager
+      io.rancher.container.pull_image: always
 keymanager:
   image: sysco/apic-keymanager:{VERSION}
   ports:
@@ -30,6 +32,7 @@ keymanager:
     - SLEEP=60
   labels:
       io.rancher.scheduler.affinity:host_label: service=keymanager
+      io.rancher.container.pull_image: always
 gateway-manager:
   image: sysco/apic-gateway-manager:{VERSION}
   ports:
@@ -43,6 +46,7 @@ gateway-manager:
     - SLEEP=100
   labels:
       io.rancher.scheduler.affinity:host_label: service=manager
+      io.rancher.container.pull_image: always
 gateway-worker:
   image: sysco/apic-gateway-worker:{VERSION}
   ports:
@@ -60,6 +64,7 @@ gateway-worker:
     - SLEEP=180
   labels:
       io.rancher.scheduler.affinity:host_label: service=gateway
+      io.rancher.container.pull_image: always
 store:
   image: sysco/apic-store:{VERSION}
   ports:
@@ -74,6 +79,7 @@ store:
     - SLEEP=200
   labels:
       io.rancher.scheduler.affinity:host_label: service=store
+      io.rancher.container.pull_image: always
 publisher:
   image: sysco/apic-publisher:{VERSION}
   ports:
@@ -89,3 +95,4 @@ publisher:
     - SLEEP=150
   labels:
       io.rancher.scheduler.affinity:host_label: service=publisher
+      io.rancher.container.pull_image: always
