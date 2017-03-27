@@ -25,4 +25,4 @@ RUN rm /mnt/wso2am-2.1.0/repository/conf/axis2/axis2.xml
 RUN mv /mnt/wso2am-2.1.0/repository/conf/axis2/axis2_TM.xml /mnt/wso2am-2.1.0/repository/conf/axis2/axis2.xml
 USER root
 RUN chmod 755 /mnt/wso2-artifacts/bin
-RUN chmod -R 755 /mnt/wso2-artifacts/reposito
+RUN chmod -R 755 /mnt/wso2-artifacts/repository

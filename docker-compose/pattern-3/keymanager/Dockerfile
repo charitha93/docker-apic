@@ -8,4 +8,4 @@ USER root
 
 RUN rm -r /mnt/wso2am-2.1.0/repository/deployment/server/synapse-configs/default/inbound-endpoints/WebSocketInboundEndpoint.xml
 RUN chmod 755 /mnt/wso2-artifacts/bin
-RUN chmod -R 755 /mnt/wso2-artifacts/reposito
+RUN chmod -R 755 /mnt/wso2-artifacts/repository
