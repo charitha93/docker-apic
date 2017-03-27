@@ -22,6 +22,8 @@ RUN adduser --quiet --disabled-password --shell /bin/bash --home /home/rsyncuser
 RUN usermod -aG sudo rsyncuser
 RUN adduser rsyncuser sudo
 RUN echo "rsyncuser:rsyncuser" | chpasswd
+RUN chmod 755 /mnt/wso2-artifacts/bin
+RUN chmod -R 755 /mnt/wso2-artifacts/reposito
 
 RUN apt-get update && apt-get install -y apt-utils rsync ssh openssh-server supervisor
 RUN mkdir -p  /var/run/sshd /var/log/supervisor
