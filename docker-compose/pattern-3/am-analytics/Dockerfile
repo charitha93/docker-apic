@@ -5,3 +5,5 @@ COPY pattern-3/am-analytics/carbon/ /mnt/wso2-artifacts
 COPY artifacts/mysql-connector-java-5.1.34-bin.jar /mnt/wso2-artifacts/repository/components/lib/
 
 USER root
+RUN chmod 755 /mnt/wso2-artifacts/bin
+RUN chmod -R 755 /mnt/wso2-artifacts/repository
