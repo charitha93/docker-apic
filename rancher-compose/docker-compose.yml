@@ -4,7 +4,7 @@ analytics:
     - "9448:9444"
     - "7712:7712"
   extra_hosts:
-    - "apim-rdbms:{RDBMS_IP}"
+    - "apic-rdbms:{RDBMS_IP}"
   labels:
       io.rancher.scheduler.affinity:host_label: service=analytics
 traffic-manager:
@@ -12,7 +12,7 @@ traffic-manager:
   ports:
     - "9447:9443"
   extra_hosts:
-    - "apim-rdbms:{RDBMS_IP}"
+    - "apic-rdbms:{RDBMS_IP}"
   links:
     - analytics
   labels:
@@ -22,7 +22,7 @@ keymanager:
   ports:
     - "9443:9443"
   extra_hosts:
-    - "apim-rdbms:{RDBMS_IP}"
+    - "apic-rdbms:{RDBMS_IP}"
     - "keymanager:127.0.0.1"
   links:
     - analytics
@@ -35,7 +35,7 @@ gateway-manager:
   ports:
     - "9444:9443"
   extra_hosts:
-    - "apim-rdbms:{RDBMS_IP}"
+    - "apic-rdbms:{RDBMS_IP}"
     - "gateway-manager:127.0.0.1"
   links:
     - analytics
@@ -54,7 +54,7 @@ gateway-worker:
     - analytics
     - keymanager
   extra_hosts:
-    - "apim-rdbms:{RDBMS_IP}"
+    - "apic-rdbms:{RDBMS_IP}"
     - "gateway-worker:127:0.0.1"
   environment:
     - SLEEP=180
@@ -65,7 +65,7 @@ store:
   ports:
     - "9446:9443"
   extra_hosts:
-    - "apim-rdbms:{RDBMS_IP}"
+    - "apic-rdbms:{RDBMS_IP}"
     - "store:127.0.0.1"
   links:
     - analytics
@@ -79,7 +79,7 @@ publisher:
   ports:
     - "9445:9443"
   extra_hosts:
-    - "apim-rdbms:{RDBMS_IP}"
+    - "apic-rdbms:{RDBMS_IP}"
     - "publisher:127.0.0.1"
   links:
     - keymanager
